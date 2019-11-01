@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+</head>
+<body>
+    <table width="50%">
+        <tbody id="content">
+            <tr>
+                <th width="10%">
+                    姓名
+                </th>
+                <th width="10%">
+                    密码
+                </th>
+                <th width="10%">
+                    ID
+                </th>
+                <th width="10%">
+                    编辑操作
+                </th>
+                <th width="10%">
+                    删除操作
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="assets/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                type:"post",
+                async:false,    //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url:"allUsers",
+                cache: false,
+                dataType:"json",
+                success:function(data){
+                    //请求成功时执行该函数内容，data即为服务器返回的json对象
+                    // console.log(data);
+                    var len = data.length;
+                    // alert(len);
+                    for (var i = 0; i < len; i++) {
+
+                        // console.log(data[i].id+" "+data[i].username+" "+data[i].password);
+                        var info = '<tr>\n' +
+                            '                <td style="text-align: center">'+data[i].username+'</td>\n' +
+                            '                <td style="text-align: center">'+data[i].password+'</td>\n' +
+                            '                <td style="text-align: center">'+data[i].id+'</td>\n' +
+                            '                <td style="text-align: center"><button type="button"><a href="editUser?id='+data[i].id+'"> 修改</a></button></td>\n' +
+                            '                <td style="text-align: center"><button type="button" onclick="delete_user('+data[i].id+',this)">删除</button></td>\n' +
+                            '            </tr>';
+                        $("#content").append(info);
+                    }
+                    // alert('success');
+                },
+                error:function(){
+                    alert("请求失败")
+                }
+            })
+        })
+    </script>
+    <script>
+
+        function delayer(){
+            window.location = "allUsers.html";
+        }
+
+        function delete_user(id,obj) {
+            $.ajax({
+                type:"post",
+                async:false,    //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url:"deleteUser",
+                cache: false,
+                data:{"id":id},  //重点必须为一个变量如：data
+                dataType:"json",
+                success:function(data){
+                    //请求成功时执行该函数内容，data即为服务器返回的json对象
+                    if(data.flag == true){
+                        alert("删除成功");
+                        $(obj).parents("tr").remove();
+                        // window.location.reload();
+                    }else {
+                        alert(data.errorMsg);
+                        setTimeout('delayer()', 1000);
+                    }
+                },
+                error:function(){
+                    alert("请求失败")
+                }
+            })
+        }
+    </script>
+</body>
+</html>

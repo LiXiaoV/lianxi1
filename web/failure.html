@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>失败</title>
+</head>
+<body>
+    <h1 style="color: red">操作失败</h1>
+    <script type="text/javascript" src= "assets/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+
+        function delayer(){
+            window.location = "allUsers.html";
+        }
+        $(function(){
+            setTimeout('delayer()', 1000);
+            //这里实现延迟2秒跳转
+        })
+    </script>
+</body>
+</html>

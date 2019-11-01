@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加用户界面</title>
+</head>
+<body>
+    <form id="addForm" action="addUser">
+        <table width="50%">
+            <tbody>
+            <tr>
+                <th width="20%">
+                    姓名：
+                </th>
+                <td>
+                    <input type="text" id="name" placeholder="请输入名字" />
+                </td>
+            </tr>
+            <tr>
+                <th width="20%">
+                    密码：
+                </th>
+                <td>
+                    <input type="password" id="password" placeholder="密码"/>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td width="20%">
+                    <button type="button" id="submitAdd">确认</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <script type="text/javascript" src= "assets/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+
+        function delayer(){
+            window.location = "allUsers.html";
+        }
+
+        $("#submitAdd").click(function(){
+            var name = $("#name").val();
+            // alert(name)
+            var password = $("#password").val()
+            // alert(password)
+            var targetUrl = $("#addForm").attr("action");
+            // alert(targetUrl)
+            $.ajax({
+                type:"post",
+                async:false,    //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url:targetUrl,
+                cache: false,
+                data:{"name":name,"password":password},  //重点必须为一个变量如：data
+                dataType:"json",
+                success:function(data){
+                    //请求成功时执行该函数内容，data即为服务器返回的json对象
+                    if(data.flag == true){
+                        alert("添加用户成功");
+                        setTimeout('delayer()', 1000);
+                        // window.location.reload();
+                    }else {
+                        alert(data.errorMsg);
+                        setTimeout('delayer()', 1000);
+                    }
+                },
+                error:function(){
+                    alert("请求失败")
+                }
+            })
+
+        })
+    </script>
+</body>
+</html>
