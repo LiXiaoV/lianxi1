@@ -3,6 +3,7 @@ package com.xiaov.bean;
 /**
  * @author xiaov Li
  * @date 2019-10-22 19:22
+ * 修改demo
  */
 public class User {
     private int id;
